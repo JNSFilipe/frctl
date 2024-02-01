@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"math/cmplx"
 	"os"
 )
@@ -24,8 +25,8 @@ func mandelbrot(c complex128) color.Color {
 func colorScheme(n uint8) color.Color {
 	// Customize these RGB values for different color schemes
 	red := 61 - 0*n
-	green := 219 - 5*n
-	blue := 217 - 5*n
+	green := 219 - 15*n
+	blue := 217 - 15*n
 	return color.RGBA{red, green, blue, 255}
 }
 
@@ -33,13 +34,21 @@ func main() {
 	// Set the size of the image (width, height)
 	const width, height = 1920, 1080
 
+	// Fractal parameters
+	xOffset, yOffset := -1.2, -0.65 // Initial position
+	scale := 0.5                    // Scale factor
+	rotation := -29.33              // Rotation angle in degrees
+
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	sin, cos := math.Sincos(rotation * math.Pi / 180)
 
 	for py := 0; py < height; py++ {
-		y := float64(py)/height*2 - 1 // Scale y to -1 to +1
 		for px := 0; px < width; px++ {
-			x := float64(px)/width*3.5 - 2.5 // Scale x to -2.5 to +1
-			color := mandelbrot(complex(x, y))
+			x := (float64(px)-float64(width)/2)*(scale*0.001) + xOffset
+			y := (float64(py)-float64(height)/2)*(scale*0.001) + yOffset
+			xNew := cos*x - sin*y
+			yNew := sin*x + cos*y
+			color := mandelbrot(complex(xNew, yNew))
 			img.Set(px, py, color)
 		}
 	}
