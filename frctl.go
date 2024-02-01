@@ -14,10 +14,19 @@ func mandelbrot(c complex128) color.Color {
 	for n := uint8(0); n < iter; n++ {
 		z = z*z + c
 		if cmplx.Abs(z) > 2 {
-			return color.RGBA{255 - 5*n, 255 - 15*n, 255 - 25*n, 255}
+			return colorScheme(n)
 		}
 	}
 	return color.Black
+}
+
+// colorScheme maps iteration count to a color
+func colorScheme(n uint8) color.Color {
+	// Customize these RGB values for different color schemes
+	red := 61 - 0*n
+	green := 219 - 5*n
+	blue := 217 - 5*n
+	return color.RGBA{red, green, blue, 255}
 }
 
 func main() {
