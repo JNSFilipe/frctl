@@ -18,15 +18,15 @@ func mandelbrot(c complex128) color.Color {
 			return colorScheme(n)
 		}
 	}
-	return color.Black
+	return color.RGBA{22, 22, 22, 255}
 }
 
 // colorScheme maps iteration count to a color
 func colorScheme(n uint8) color.Color {
 	// Customize these RGB values for different color schemes
 	red := 61 - 0*n
-	green := 219 - 15*n
-	blue := 217 - 15*n
+	green := 219 - 10*n
+	blue := 217 - 10*n
 	return color.RGBA{red, green, blue, 255}
 }
 
